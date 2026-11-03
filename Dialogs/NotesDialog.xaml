@@ -4,7 +4,16 @@
         Title="Notlar (Scratchpad)" Height="500" Width="450"
         ResizeMode="CanResize"
         WindowStartupLocation="CenterOwner"
-        Background="{DynamicResource DialogBackgroundBrush}">
+        Background="{DynamicResource DialogBackgroundBrush}"
+        Loaded="NotesDialog_Loaded">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Themes/LightTheme.xaml"/>
+                <ResourceDictionary Source="/Themes/DarkTheme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
     <Grid Margin="12">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>

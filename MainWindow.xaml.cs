@@ -26,10 +26,8 @@ namespace EasyTaskStarter
         private TrayIcon? _trayIcon;
         private HotkeyListener? _hotkeyListener;
         private bool _isClosing = false;
-        private bool _isMaximized = false;
-        private Rect _restoreBounds;
 
-        public MainWindow()
+                public MainWindow()
         {
             _config = ConfigManager.LoadConfig();
             InitializeComponent();
@@ -249,11 +247,12 @@ namespace EasyTaskStarter
             }
 
             ShortcutListBox.ItemsSource = null;
-            foreach (var s in _config.Shortcuts) s.LoadIcon();
-            ShortcutListBox.ItemsSource = _config.Shortcuts;
+                        foreach (var s in _config.Shortcuts) s.LoadIcon();
+                        ShortcutListBox.ItemsSource = _config.Shortcuts;
 
-            QuickAccessListBox.ItemsSource = null;
-            QuickAccessListBox.ItemsSource = _config.QuickAccess;
+                        QuickAccessListBox.ItemsSource = null;
+                        foreach (var q in _config.QuickAccess) q.LoadIcon();
+                        QuickAccessListBox.ItemsSource = _config.QuickAccess;
 
             WindowHelper.SetAlwaysOnTop(this, _config.AlwaysOnTop);
             UpdatePinButton();
@@ -349,17 +348,8 @@ namespace EasyTaskStarter
 
         private void BtnMaximize_Click(object sender, RoutedEventArgs e)
         {
-            if (_isMaximized)
-            {
-                WindowState = WindowState.Normal;
-                _isMaximized = false;
-            }
-            else
-            {
-                _restoreBounds = new Rect(Left, Top, Width, Height);
-                WindowState = WindowState.Maximized;
-                _isMaximized = true;
-            }
+            // Tam ekran (maximize) devre dışı — sadece boyutlandırılabilir
+            // İsterseniz buraya büyük bir boyuta ayarlama eklenebilir
         }
 
         private void BtnClose_Click(object sender, RoutedEventArgs e)
@@ -995,10 +985,6 @@ namespace EasyTaskStarter
         {
             if (WindowState == WindowState.Minimized)
                 Hide();
-            else if (WindowState == WindowState.Maximized)
-                _isMaximized = true;
-            else
-                _isMaximized = false;
         }
 
         private void Window_Closing(object? sender, System.ComponentModel.CancelEventArgs e)

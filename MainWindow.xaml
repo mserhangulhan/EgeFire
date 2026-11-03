@@ -13,7 +13,9 @@
         StateChanged="Window_StateChanged"
         Closing="Window_Closing"
         Loaded="MainWindow_Loaded"
-        MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+        MouseLeftButtonDown="TitleBar_MouseLeftButtonDown"
+        MaxHeight="{x:Static SystemParameters.MaximizedPrimaryScreenHeight}"
+        MaxWidth="{x:Static SystemParameters.MaximizedPrimaryScreenWidth}">
     <Window.Resources>
         <!-- Theme Resources -->
         <ResourceDictionary>
@@ -90,19 +92,21 @@
             </DataTemplate>
 
             <DataTemplate x:Key="QuickAccessTemplate">
-                <Grid Height="32" Margin="3,1,3,1" Background="Transparent">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="8,0,0,0">
-                        <TextBlock Text="{Binding Name}" VerticalAlignment="Center" FontSize="12" 
-                                   Foreground="{DynamicResource TextBrush}" TextTrimming="CharacterEllipsis" MaxWidth="115"/>
-                        <TextBlock Text="⏵" VerticalAlignment="Center" Margin="3,0,0,0" FontSize="11" 
-                                   Foreground="{DynamicResource SubtleTextBrush}"/>
-                    </StackPanel>
-                </Grid>
-            </DataTemplate>
+                            <Grid Height="32" Margin="3,1,3,1" Background="Transparent">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Image Grid.Column="0" Source="{Binding Icon}" Width="16" Height="16" Margin="8,0,5,0"
+                                       RenderOptions.BitmapScalingMode="HighQuality"
+                                       VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" Text="{Binding Name}" VerticalAlignment="Center" FontSize="12" 
+                                           Foreground="{DynamicResource TextBrush}" TextTrimming="CharacterEllipsis" MaxWidth="115"/>
+                                <TextBlock Grid.Column="2" Text="⏵" VerticalAlignment="Center" Margin="3,0,8,0" FontSize="11" 
+                                           Foreground="{DynamicResource SubtleTextBrush}"/>
+                            </Grid>
+                        </DataTemplate>
 
             <!-- Button Style -->
             <Style x:Key="ToolbarButtonStyle" TargetType="Button">
@@ -214,7 +218,7 @@
                 <!-- Window Control Buttons -->
                 <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,4,0">
                     <Button Style="{StaticResource TitleBarButtonStyle}" Content="🗕" Click="BtnMinimize_Click" ToolTip="Küçült" WindowChrome.IsHitTestVisibleInChrome="True"/>
-                    <Button Style="{StaticResource TitleBarButtonStyle}" Content="🗖" Click="BtnMaximize_Click" ToolTip="Büyült" WindowChrome.IsHitTestVisibleInChrome="True"/>
+                    <Button Style="{StaticResource TitleBarButtonStyle}" Content="🗖" Click="BtnMaximize_Click" ToolTip="Büyütme devre dışı (sadece boyutlandırma)" WindowChrome.IsHitTestVisibleInChrome="True" IsEnabled="False"/>
                     <Button Style="{StaticResource CloseButtonStyle}" Content="✕" Click="BtnClose_Click" ToolTip="Kapat" WindowChrome.IsHitTestVisibleInChrome="True"/>
                 </StackPanel>
             </Grid>

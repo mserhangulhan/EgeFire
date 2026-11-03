@@ -16,16 +16,12 @@ namespace EasyTaskStarter.Helpers
         private static extern bool DestroyIcon(IntPtr hIcon);
 
         /// <summary>
-        /// Verilen exe / lnk yolundan 16x16 BitmapSource döndürür.
+        /// Verilen exe / lnk / dll yolundan 16x16 BitmapSource döndürür.
         /// Hata durumunda null döner.
         /// </summary>
         public static BitmapSource? GetIcon(string path)
         {
             if (string.IsNullOrWhiteSpace(path))
-                return null;
-
-            // Store uygulamaları için path boş olabilir — null dön
-            if (!System.IO.File.Exists(path))
                 return null;
 
             try

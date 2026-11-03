@@ -64,7 +64,22 @@ namespace EasyTaskStarter.Services
                 }
 
                 string json = File.ReadAllText(file);
-                return JsonSerializer.Deserialize<AppConfig>(json) ?? CreateDefaultConfig();
+                var config = JsonSerializer.Deserialize<AppConfig>(json) ?? CreateDefaultConfig();
+                
+                // Ensure default QuickAccess items exist if list is empty
+                if (config.QuickAccess == null || config.QuickAccess.Count == 0)
+                {
+                    string userProfile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+                    config.QuickAccess = new List<QuickAccessItem>
+                    {
+                        new QuickAccessItem("Bu bilgisayar", "::{20D04FE0-3AEA-1069-A2D8-08002B30309D}"),
+                        new QuickAccessItem("Belgeler", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)),
+                        new QuickAccessItem("Masaüstü", Environment.GetFolderPath(Environment.SpecialFolder.Desktop)),
+                        new QuickAccessItem("İndirilenler", Path.Combine(userProfile, "Downloads"))
+                    };
+                }
+                
+                return config;
             }
             catch
             {
