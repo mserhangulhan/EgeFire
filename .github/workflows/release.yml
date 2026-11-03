@@ -32,8 +32,8 @@ jobs:
       - name: Build
         run: dotnet build LeonDesk.csproj --configuration Release --no-restore
 
-      - name: Publish (self-contained, win-x64, trimmed)
-        run: dotnet publish LeonDesk.csproj --configuration Release --runtime win-x64 --self-contained true -p:PublishSingleFile=true -p:PublishTrimmed=true -p:PublishReadyToRun=true -p:DebugType=none -p:DebugSymbols=false -o ./publish
+      - name: Publish (self-contained, win-x64, optimized)
+        run: dotnet publish LeonDesk.csproj --configuration Release --runtime win-x64 --self-contained true -p:PublishSingleFile=true -p:PublishTrimmed=false -p:PublishReadyToRun=true -p:DebugType=none -p:DebugSymbols=false -o ./publish
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
