@@ -32,8 +32,8 @@ jobs:
       - name: Build
         run: dotnet build LeonDesk.csproj --configuration Release --no-restore
 
-      - name: Publish (self-contained, win-x64)
-        run: dotnet publish LeonDesk.csproj --configuration Release --runtime win-x64 --self-contained true -p:PublishSingleFile=true -p:PublishTrimmed=false -o ./publish
+      - name: Publish (self-contained, win-x64, trimmed)
+        run: dotnet publish LeonDesk.csproj --configuration Release --runtime win-x64 --self-contained true -p:PublishSingleFile=true -p:PublishTrimmed=true -p:PublishReadyToRun=true -p:DebugType=none -p:DebugSymbols=false -o ./publish
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
@@ -43,7 +43,7 @@ jobs:
           name: EgeFire ${{ github.ref_name }}
           body: |
             ## EgeFire ${{ github.ref_name }}
-            
+
             ### Değişiklikler
             - Custom window chrome (borderless, draggable, resize grip)
             - Light/Dark/System tema desteği
@@ -65,7 +65,7 @@ jobs:
           name: EgeFire ${{ github.event.inputs.version }}
           body: |
             ## EgeFire ${{ github.event.inputs.version }}
-            
+
             ### Değişiklikler
             - Custom window chrome (borderless, draggable, resize grip)
             - Light/Dark/System tema desteği
