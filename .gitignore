@@ -1,0 +1,35 @@
+# Build outputs
+bin/
+obj/
+
+# NuGet packages
+packages/
+
+# IDE
+.vs/
+.idea/
+*.user
+*.suo
+
+# OS
+Thumbs.db
+Desktop.ini
+
+# Logs
+*.log
+error.log
+
+# Temporary files
+*.tmp
+*.temp
+out.txt
+err.txt
+
+# Publish
+publish/
+
+# Debug symbols
+*.pdb
+
+# Temporary project files
+*_wpftmp.csproj

@@ -1,0 +1,82 @@
+<Window x:Class="EasyTaskStarter.Dialogs.AboutDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Hakkında — EgeFire" Height="580" Width="500"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner"
+        Background="{DynamicResource DialogBackgroundBrush}">
+    <Grid Margin="18">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Logo &amp; Başlık -->
+        <StackPanel Grid.Row="0" HorizontalAlignment="Center" Margin="0,0,0,10">
+            <TextBlock Text="⚡ EgeFire" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource TextBrush}" HorizontalAlignment="Center"/>
+            <TextBlock Text="Masaüstü Görev &amp; Kısayol Yöneticisi — v3.0" FontSize="12" Foreground="{DynamicResource SubtleTextBrush}" HorizontalAlignment="Center" Margin="0,2,0,0"/>
+        </StackPanel>
+
+        <!-- Şirket &amp; Geliştirici Kartı -->
+        <Border Grid.Row="1" Background="{DynamicResource CardBackgroundBrush}" CornerRadius="6" Padding="12" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" Margin="0,0,0,10">
+            <StackPanel>
+                <TextBlock Text="🏢 EgeLeon Bilişim" FontWeight="Bold" FontSize="13" Foreground="{DynamicResource TextBrush}"/>
+                <TextBlock Text="👤 Geliştirici: Murat Serhan Gülhan" FontSize="12" Margin="0,3,0,0" Foreground="{DynamicResource SubtleTextBrush}"/>
+                <TextBlock Margin="0,4,0,0" FontSize="12">
+                    <Run Text="✉️ İletişim: " Foreground="{DynamicResource SubtleTextBrush}"/>
+                    <Hyperlink NavigateUri="mailto:iletisim@egeleon.com" RequestNavigate="Hyperlink_RequestNavigate" Foreground="{DynamicResource TextBrush}">
+                        iletisim@egeleon.com
+                    </Hyperlink>
+                </TextBlock>
+            </StackPanel>
+        </Border>
+
+        <!-- Özellikler Listesi (Kaydırılabilir) -->
+        <Border Grid.Row="2" Background="{DynamicResource CardBackgroundBrush}" CornerRadius="6" Padding="10" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <TextBlock Text="✨ Öne Çıkan Özellikler" FontWeight="Bold" FontSize="12" Margin="0,0,0,6" Foreground="{DynamicResource TextBrush}"/>
+                    <TextBlock Text="• Sürükle-Bırak Kısayol Ekleme (Masaüstü/Explorer'dan)" FontSize="11" Margin="0,2,0,0" Foreground="{DynamicResource SubtleTextBrush}"/>
+                    <TextBlock Text="• .LNK Çözücü (Masaüstü kısayollarını asıl hedefe bağlar)" FontSize="11" Margin="0,2,0,0" Foreground="{DynamicResource SubtleTextBrush}"/>
+                    <TextBlock Text="• Çift Tık ve Klavye ile Başlatma (Enter / Ok tuşları)" FontSize="11" Margin="0,2,0,0" Foreground="{DynamicResource SubtleTextBrush}"/>
+                    <TextBlock Text="• Anlık Arama ve Akıllı Filtreleme" FontSize="11" Margin="0,2,0,0" Foreground="{DynamicResource SubtleTextBrush}"/>
+                    <TextBlock Text="• Web URL Kısayolları (🌐 Varsayılan tarayıcıda açma)" FontSize="11" Margin="0,2,0,0" Foreground="{DynamicResource SubtleTextBrush}"/>
+                    <TextBlock Text="• WhatsApp Store / UWP Kısayol Desteği" FontSize="11" Margin="0,2,0,0" Foreground="{DynamicResource SubtleTextBrush}"/>
+                    <TextBlock Text="• 🚀 Açılış Grubu (Seçilen uygulamaları tek tıkla toplu başlatma)" FontSize="11" Margin="0,2,0,0" Foreground="{DynamicResource SubtleTextBrush}"/>
+                    <TextBlock Text="• 📁 'Dosya Konumunu Aç' Entegrasyonu" FontSize="11" Margin="0,2,0,0" Foreground="{DynamicResource SubtleTextBrush}"/>
+                    <TextBlock Text="• ⚡ Hızlı Sistem Araçları (Görev Yöneticisi, CMD, Not Defteri...)" FontSize="11" Margin="0,2,0,0" Foreground="{DynamicResource SubtleTextBrush}"/>
+                    <TextBlock Text="• ⏱️ Zamanlı Bilgisayar Kapatma / Uyku Sayacı" FontSize="11" Margin="0,2,0,0" Foreground="{DynamicResource SubtleTextBrush}"/>
+                    <TextBlock Text="• 📋 Son Kopyalananlar (Akıllı Pano Geçmişi)" FontSize="11" Margin="0,2,0,0" Foreground="{DynamicResource SubtleTextBrush}"/>
+                    <TextBlock Text="• 💾 Ayarları Dışa/İçe Aktarma (JSON Yedekleme)" FontSize="11" Margin="0,2,0,0" Foreground="{DynamicResource SubtleTextBrush}"/>
+                    <TextBlock Text="• 📌 Her Zaman Üstte (Pin) Modu" FontSize="11" Margin="0,2,0,0" Foreground="{DynamicResource SubtleTextBrush}"/>
+                    <TextBlock Text="• ⌨️ Özelleştirilebilir Global ve Kısayol Özel Hotkey'ler" FontSize="11" Margin="0,2,0,0" Foreground="{DynamicResource SubtleTextBrush}"/>
+                    <TextBlock Text="• 🌙 Koyu/Açık/Sistem Tema Desteği" FontSize="11" Margin="0,2,0,0" Foreground="{DynamicResource SubtleTextBrush}"/>
+                    <TextBlock Text="• 🖥️ Çoklu Monitör Pozisyon Hatırlama" FontSize="11" Margin="0,2,0,0" Foreground="{DynamicResource SubtleTextBrush}"/>
+                    <TextBlock Text="• 📝 Notlar (Scratchpad) - Kalıcı kaydetme" FontSize="11" Margin="0,2,0,0" Foreground="{DynamicResource SubtleTextBrush}"/>
+                    <TextBlock Text="• 🔄 Otomatik Güncelleme Kontrolü (GitHub Releases)" FontSize="11" Margin="0,2,0,0" Foreground="{DynamicResource SubtleTextBrush}"/>
+                    <TextBlock Text="• Sistem Tepsisi (Tray) &amp; Windows ile Başlama" FontSize="11" Margin="0,2,0,0" Foreground="{DynamicResource SubtleTextBrush}"/>
+
+                    <TextBlock Text="" FontSize="11" Margin="0,8,0,0"/>
+                    <TextBlock Text="🔍 Arama Çubuğu Kısayolları (Web Arama):" FontWeight="Bold" FontSize="12" Margin="0,0,0,6" Foreground="{DynamicResource TextBrush}"/>
+                    <TextBlock Text="• g [terim]  → Google arama" FontSize="11" Margin="0,2,0,0" Foreground="{DynamicResource SubtleTextBrush}"/>
+                    <TextBlock Text="• yt [terim] → YouTube arama" FontSize="11" Margin="0,2,0,0" Foreground="{DynamicResource SubtleTextBrush}"/>
+                    <TextBlock Text="• gh [terim] → GitHub arama" FontSize="11" Margin="0,2,0,0" Foreground="{DynamicResource SubtleTextBrush}"/>
+                    <TextBlock Text="• so [terim] → StackOverflow arama" FontSize="11" Margin="0,2,0,0" Foreground="{DynamicResource SubtleTextBrush}"/>
+                    <TextBlock Text="• wk [terim] → Wikipedia arama" FontSize="11" Margin="0,2,0,0" Foreground="{DynamicResource SubtleTextBrush}"/>
+                    <TextBlock Text="" FontSize="11" Margin="0,2,0,0"/>
+                    <TextBlock Text="Örnek: g egefire github  →  Google'da 'egefire github' arar" FontSize="11" Margin="0,2,0,0" Foreground="{DynamicResource SubtleTextBrush}"/>
+                    <TextBlock Text="Örnek: yt c# tutorial  →  YouTube'da 'c# tutorial' arar" FontSize="11" Margin="0,2,0,0" Foreground="{DynamicResource SubtleTextBrush}"/>
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
+
+        <TextBlock Grid.Row="3" Text="© 2026 EgeLeon Bilişim. Tüm hakları saklıdır." FontSize="10" Foreground="{DynamicResource SubtleTextBrush}" HorizontalAlignment="Center" Margin="0,8,0,0"/>
+
+        <!-- Kapat Butonu -->
+        <Button Grid.Row="4" Content="Tamam" Width="90" Height="28" HorizontalAlignment="Center" Margin="0,8,0,0" Click="BtnClose_Click" 
+                Background="{DynamicResource ButtonBackgroundBrush}" Foreground="{DynamicResource ButtonForegroundBrush}" BorderBrush="{DynamicResource ButtonBorderBrush}"/>
+    </Grid>
+</Window>

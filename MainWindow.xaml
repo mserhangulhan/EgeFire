@@ -1,0 +1,304 @@
+<Window x:Class="EasyTaskStarter.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:models="clr-namespace:EasyTaskStarter.Models"
+        Title="EgeFire" Height="400" Width="350"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        Topmost="False"
+        ResizeMode="CanResizeWithGrip"
+        WindowState="Normal"
+        ShowActivated="True"
+        StateChanged="Window_StateChanged"
+        Closing="Window_Closing"
+        Loaded="MainWindow_Loaded"
+        MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+    <Window.Resources>
+        <!-- Theme Resources -->
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Themes/LightTheme.xaml"/>
+                <ResourceDictionary Source="Themes/DarkTheme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <DataTemplate x:Key="ShortcutTemplate">
+                <Grid Height="32" Margin="3,1,3,1" Background="Transparent">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="4,0,0,0">
+                        <Image Source="{Binding Icon}" Width="16" Height="16" Margin="0,0,5,0"
+                               RenderOptions.BitmapScalingMode="HighQuality"
+                               VerticalAlignment="Center">
+                            <Image.Style>
+                                <Style TargetType="Image">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsUrl}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsStoreApp}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
+                        <TextBlock Text="🌐" FontSize="13" VerticalAlignment="Center" Margin="0,0,5,0">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsUrl}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                        <TextBlock Text="💬" FontSize="13" VerticalAlignment="Center" Margin="0,0,5,0">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsStoreApp}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                        <TextBlock Text="{Binding Name}" VerticalAlignment="Center" FontSize="12" 
+                                   Foreground="{DynamicResource TextBrush}" TextTrimming="CharacterEllipsis" MaxWidth="105"/>
+                        <TextBlock Text="🚀" FontSize="11" VerticalAlignment="Center" Margin="3,0,0,0" ToolTip="Otomatik Başlatma Grubunda">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding AutoStart}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                        <TextBlock Text="⏵" VerticalAlignment="Center" Margin="3,0,0,0" FontSize="11" 
+                                   Foreground="{DynamicResource SubtleTextBrush}"/>
+                    </StackPanel>
+                </Grid>
+            </DataTemplate>
+
+            <DataTemplate x:Key="QuickAccessTemplate">
+                <Grid Height="32" Margin="3,1,3,1" Background="Transparent">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="8,0,0,0">
+                        <TextBlock Text="{Binding Name}" VerticalAlignment="Center" FontSize="12" 
+                                   Foreground="{DynamicResource TextBrush}" TextTrimming="CharacterEllipsis" MaxWidth="115"/>
+                        <TextBlock Text="⏵" VerticalAlignment="Center" Margin="3,0,0,0" FontSize="11" 
+                                   Foreground="{DynamicResource SubtleTextBrush}"/>
+                    </StackPanel>
+                </Grid>
+            </DataTemplate>
+
+            <!-- Button Style -->
+            <Style x:Key="ToolbarButtonStyle" TargetType="Button">
+                <Setter Property="Width" Value="30"/>
+                <Setter Property="Height" Value="26"/>
+                <Setter Property="Margin" Value="1"/>
+                <Setter Property="Background" Value="{DynamicResource ButtonBackgroundBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource ButtonForegroundBrush}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderBrush}"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="1"
+                                    CornerRadius="4"
+                                    SnapsToDevicePixels="True">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="{DynamicResource ButtonHoverBrush}"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Background" Value="{DynamicResource ButtonPressedBrush}"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="TitleBarButtonStyle" TargetType="Button">
+                <Setter Property="Width" Value="36"/>
+                <Setter Property="Height" Value="28"/>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderBrush" Value="Transparent"/>
+                <Setter Property="Foreground" Value="{DynamicResource TitleBarTextBrush}"/>
+                <Setter Property="FontSize" Value="12"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="0"
+                                    SnapsToDevicePixels="True">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="{DynamicResource TitleBarButtonHoverBrush}"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Background" Value="{DynamicResource TitleBarButtonPressedBrush}"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="CloseButtonStyle" TargetType="Button" BasedOn="{StaticResource TitleBarButtonStyle}">
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="#E81123"/>
+                        <Setter Property="Foreground" Value="White"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome 
+            CaptionHeight="32"
+            ResizeBorderThickness="6"
+            CornerRadius="0"
+            GlassFrameThickness="0"
+            UseAeroCaptionButtons="False"/>
+    </WindowChrome.WindowChrome>
+
+    <Border Background="{DynamicResource WindowBackgroundBrush}" 
+            BorderBrush="{DynamicResource WindowBorderBrush}" 
+            BorderThickness="1"
+            CornerRadius="0">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="32"/>  <!-- Custom Title Bar -->
+                <RowDefinition Height="Auto"/> <!-- App Title -->
+                <RowDefinition Height="Auto"/> <!-- Search -->
+                <RowDefinition Height="*"/>    <!-- Content -->
+                <RowDefinition Height="Auto"/> <!-- Toolbar -->
+            </Grid.RowDefinitions>
+
+            <!-- Custom Title Bar -->
+            <Grid Grid.Row="0" Background="Transparent" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <!-- App Icon and Title -->
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="8,0,0,0" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+                    <Image Source="pack://application:,,,/EgeFireIcon.ico" Width="16" Height="16" Margin="0,0,6,0" RenderOptions.BitmapScalingMode="HighQuality"/>
+                    <TextBlock Text="EgeFire" FontSize="12" FontWeight="SemiBold" 
+                               Foreground="{DynamicResource TitleBarTextBrush}" VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <!-- Window Control Buttons -->
+                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,4,0">
+                    <Button Style="{StaticResource TitleBarButtonStyle}" Content="🗕" Click="BtnMinimize_Click" ToolTip="Küçült" WindowChrome.IsHitTestVisibleInChrome="True"/>
+                    <Button Style="{StaticResource TitleBarButtonStyle}" Content="🗖" Click="BtnMaximize_Click" ToolTip="Büyült" WindowChrome.IsHitTestVisibleInChrome="True"/>
+                    <Button Style="{StaticResource CloseButtonStyle}" Content="✕" Click="BtnClose_Click" ToolTip="Kapat" WindowChrome.IsHitTestVisibleInChrome="True"/>
+                </StackPanel>
+            </Grid>
+
+            <!-- App Title Row (Pin + Theme) -->
+            <Grid Grid.Row="1" Margin="0,4,0,4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+                    <Button Name="BtnPin" Content="📌" Width="26" Height="24" Style="{StaticResource ToolbarButtonStyle}" 
+                            Click="BtnPin_Click" ToolTip="Her Zaman Üstte" Margin="0,0,4,0"/>
+                    <Button Name="BtnTheme" Content="🌙" Width="26" Height="24" Style="{StaticResource ToolbarButtonStyle}" 
+                            Click="BtnTheme_Click" ToolTip="Tema Değiştir (Açık/Koyu/Sistem)" Margin="0,0,4,0"/>
+                </StackPanel>
+            </Grid>
+
+            <!-- Search Box -->
+            <Grid Grid.Row="2" Margin="10,0,10,4">
+                <TextBox Name="SearchBox"
+                         Height="28" Padding="8,2"
+                         Background="{DynamicResource SearchBoxBackgroundBrush}"
+                         Foreground="{DynamicResource TextBrush}"
+                         BorderBrush="{DynamicResource SearchBoxBorderBrush}"
+                         BorderThickness="1"
+                         CaretBrush="{DynamicResource TextBrush}"
+                         TextChanged="SearchBox_TextChanged"
+                         PreviewKeyDown="SearchBox_PreviewKeyDown"
+                         VerticalContentAlignment="Center"
+                         FontSize="12"/>
+                <TextBlock Name="SearchPlaceholder"
+                           Text="🔍 Ara... (Enter ile aç, g: Google, yt: YouTube, gh: GitHub, so: StackOverflow, wk: Wikipedia)"
+                           Foreground="{DynamicResource PlaceholderBrush}" FontSize="11"
+                           IsHitTestVisible="False"
+                           VerticalAlignment="Center" Margin="10,0,0,0"/>
+            </Grid>
+
+            <!-- Content: Shortcuts & Quick Access -->
+            <Grid Grid.Row="3" Margin="10,0,10,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <GroupBox Grid.Column="0" Header="Kısayollar" Margin="0,0,2,0" Padding="2"
+                          Foreground="{DynamicResource GroupBoxHeaderBrush}"
+                          BorderBrush="{DynamicResource GroupBoxBorderBrush}">
+                    <ListBox Name="ShortcutListBox"
+                             ItemsSource="{Binding Shortcuts}"
+                             ItemTemplate="{StaticResource ShortcutTemplate}"
+                             Background="Transparent" BorderBrush="Transparent"
+                             HorizontalContentAlignment="Stretch"
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                             MouseDoubleClick="ListBox_MouseDoubleClick"
+                             MouseRightButtonUp="ListBox_MouseRightButtonUp"/>
+                </GroupBox>
+
+                <GroupBox Grid.Column="1" Header="Hızlı Erişim" Margin="2,0,0,0" Padding="2"
+                          Foreground="{DynamicResource GroupBoxHeaderBrush}"
+                          BorderBrush="{DynamicResource GroupBoxBorderBrush}">
+                    <ListBox Name="QuickAccessListBox"
+                             ItemsSource="{Binding QuickAccess}"
+                             ItemTemplate="{StaticResource QuickAccessTemplate}"
+                             Background="Transparent" BorderBrush="Transparent"
+                             HorizontalContentAlignment="Stretch"
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                             MouseDoubleClick="ListBox_MouseDoubleClick"
+                             MouseRightButtonUp="ListBox_MouseRightButtonUp"/>
+                </GroupBox>
+            </Grid>
+
+            <!-- Toolbar Buttons -->
+            <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,6,0,10">
+                <Button Name="BtnLaunchAll" Content="🚀" Style="{StaticResource ToolbarButtonStyle}" Click="BtnLaunchAll_Click" ToolTip="Açılış Grubundaki Uygulamaları Başlat"/>
+                <Button Name="BtnAddShortcut" Content="+" Style="{StaticResource ToolbarButtonStyle}" Click="BtnAddShortcut_Click" ToolTip="Kısayol Ekle"/>
+                <Button Name="BtnAddQuickAccess" Content="📁+" Width="34" Style="{StaticResource ToolbarButtonStyle}" Click="BtnAddQuickAccess_Click" ToolTip="Klasör Ekle"/>
+                <Button Name="BtnQuickTools" Content="⚡" Style="{StaticResource ToolbarButtonStyle}" Click="BtnQuickTools_Click" ToolTip="Hızlı Sistem Araçları ve Zamanlayıcı"/>
+                <Button Name="BtnClipboard" Content="📋" Style="{StaticResource ToolbarButtonStyle}" Click="BtnClipboard_Click" ToolTip="Pano Geçmişi (Son Kopyalananlar)"/>
+                <Button Name="BtnNotes" Content="📝" Style="{StaticResource ToolbarButtonStyle}" Click="BtnNotes_Click" ToolTip="Notlar (Scratchpad)"/>
+                <Button Name="BtnHotkeySettings" Content="⌨" Style="{StaticResource ToolbarButtonStyle}" Click="BtnHotkeySettings_Click" ToolTip="Hotkey Ayarı"/>
+                <Button Name="BtnConfigBackup" Content="💾" Style="{StaticResource ToolbarButtonStyle}" Click="BtnConfigBackup_Click" ToolTip="Yedekle / Geri Yükle (Import-Export)"/>
+                <Button Name="BtnAbout" Content="ℹ️" Style="{StaticResource ToolbarButtonStyle}" Click="BtnAbout_Click" ToolTip="Hakkında ve Tanıtım"/>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>

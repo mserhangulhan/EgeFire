@@ -1,0 +1,41 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Light Theme Colors -->
+    <SolidColorBrush x:Key="WindowBackgroundBrush" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="WindowBorderBrush" Color="#E0E0E0"/>
+    
+    <SolidColorBrush x:Key="TitleBarTextBrush" Color="#1E1E1E"/>
+    <SolidColorBrush x:Key="TitleBarButtonHoverBrush" Color="#E5E5E5"/>
+    <SolidColorBrush x:Key="TitleBarButtonPressedBrush" Color="#CCCCCC"/>
+
+    <SolidColorBrush x:Key="TextBrush" Color="#1E1E1E"/>
+    <SolidColorBrush x:Key="SubtleTextBrush" Color="#888888"/>
+    <SolidColorBrush x:Key="PlaceholderBrush" Color="#999999"/>
+
+    <SolidColorBrush x:Key="SearchBoxBackgroundBrush" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="SearchBoxBorderBrush" Color="#CCCCCC"/>
+
+    <SolidColorBrush x:Key="GroupBoxHeaderBrush" Color="#333333"/>
+    <SolidColorBrush x:Key="GroupBoxBorderBrush" Color="#E0E0E0"/>
+
+    <SolidColorBrush x:Key="ButtonBackgroundBrush" Color="#F5F5F5"/>
+    <SolidColorBrush x:Key="ButtonForegroundBrush" Color="#1E1E1E"/>
+    <SolidColorBrush x:Key="ButtonBorderBrush" Color="#DDDDDD"/>
+    <SolidColorBrush x:Key="ButtonHoverBrush" Color="#E8E8E8"/>
+    <SolidColorBrush x:Key="ButtonPressedBrush" Color="#D0D0D0"/>
+
+    <SolidColorBrush x:Key="ListBoxBackgroundBrush" Color="Transparent"/>
+    <SolidColorBrush x:Key="ListBoxItemHoverBrush" Color="#F0F0F0"/>
+    <SolidColorBrush x:Key="ListBoxItemSelectedBrush" Color="#E0E0E0"/>
+
+    <SolidColorBrush x:Key="ContextMenuBackgroundBrush" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="ContextMenuBorderBrush" Color="#DDDDDD"/>
+    <SolidColorBrush x:Key="ContextMenuItemHoverBrush" Color="#F0F0F0"/>
+
+    <SolidColorBrush x:Key="DialogBackgroundBrush" Color="#F5F5F5"/>
+    <SolidColorBrush x:Key="DialogBorderBrush" Color="#E0E0E0"/>
+    <SolidColorBrush x:Key="CardBackgroundBrush" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="CardBorderBrush" Color="#E0E0E0"/>
+
+</ResourceDictionary>
