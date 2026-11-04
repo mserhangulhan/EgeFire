@@ -23,11 +23,11 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Logo &amp; Başlık -->
-        <StackPanel Grid.Row="0" HorizontalAlignment="Center" Margin="0,0,0,10">
-            <TextBlock Text="⚡ EgeFire" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource TextBrush}" HorizontalAlignment="Center"/>
-            <TextBlock Text="Masaüstü Görev &amp; Kısayol Yöneticisi — v3.0" FontSize="12" Foreground="{DynamicResource SubtleTextBrush}" HorizontalAlignment="Center" Margin="0,2,0,0"/>
-        </StackPanel>
+        <!-- Logo & Başlık -->
+                <StackPanel Grid.Row="0" HorizontalAlignment="Center" Margin="0,0,0,10">
+                    <TextBlock Text="⚡ EgeFire" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource TextBrush}" HorizontalAlignment="Center"/>
+                    <TextBlock x:Name="VersionText" FontSize="12" Foreground="{DynamicResource SubtleTextBrush}" HorizontalAlignment="Center" Margin="0,2,0,0"/>
+                </StackPanel>
 
         <!-- Şirket &amp; Geliştirici Kartı -->
         <Border Grid.Row="1" Background="{DynamicResource CardBackgroundBrush}" CornerRadius="6" Padding="12" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" Margin="0,0,0,10">

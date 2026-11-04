@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Navigation;
 using EasyTaskStarter.Services;
@@ -7,14 +8,19 @@ namespace EasyTaskStarter.Dialogs
 {
     public partial class AboutDialog : Window
     {
+        public string AppVersion { get; }
+
         public AboutDialog()
         {
+            var ver = Assembly.GetExecutingAssembly().GetName().Version?.ToString(3) ?? "3.0.0";
+            AppVersion = $"v{ver}";
             InitializeComponent();
         }
 
         private void AboutDialog_Loaded(object sender, RoutedEventArgs e)
         {
             ApplyTheme();
+            VersionText.Text = $"Masaüstü Görev & Kısayol Yöneticisi — {AppVersion}";
         }
 
         private void ApplyTheme()

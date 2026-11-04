@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
+using System.Windows.Threading;
 using WpfApplication = System.Windows.Application;
 using WpfMessageBox = System.Windows.MessageBox;
 using WpfClipboard = System.Windows.Clipboard;
@@ -22,6 +24,21 @@ namespace EasyTaskStarter
 {
     public partial class MainWindow : Window
     {
+        [DllImport("user32.dll")]
+        private static extern bool SetForegroundWindow(IntPtr hWnd);
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr GetForegroundWindow();
+
+        [DllImport("user32.dll")]
+        private static extern bool AttachThreadInput(uint idAttach, uint idAttachTo, bool fAttach);
+
+        [DllImport("user32.dll")]
+        private static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
+
+        [DllImport("kernel32.dll")]
+        private static extern uint GetCurrentThreadId();
+
         private AppConfig _config;
         private TrayIcon? _trayIcon;
         private HotkeyListener? _hotkeyListener;
@@ -39,9 +56,50 @@ namespace EasyTaskStarter
         {
             var handle = new WindowInteropHelper(this).Handle;
             _trayIcon = new TrayIcon(handle, "EgeFire",
-                () => { Show(); Activate(); },
-                () => { _isClosing = true; WpfApplication.Current.Shutdown(); },
-                () => LaunchAutoStartGroup());
+                            () =>
+                            {
+                                // Must run on UI thread for SetForegroundWindow to work reliably
+                                Dispatcher.BeginInvoke(new Action(() =>
+                                {
+                                    // 1. Restore window state if minimized
+                                    if (WindowState == WindowState.Minimized)
+                                        WindowState = WindowState.Normal;
+
+                                    // 2. Show window (WPF handles visibility)
+                                    if (!IsVisible)
+                                        Show();
+
+                                    // 3. Force foreground focus
+                                    Activate();
+                                    Topmost = true;
+                                    Topmost = false;
+                                    Focus();
+
+                                    // 4. Aggressive foreground steal using AttachThreadInput
+                                    var hwnd = new WindowInteropHelper(this).Handle;
+                                    if (hwnd != IntPtr.Zero)
+                                    {
+                                        var foregroundHwnd = GetForegroundWindow();
+                                        if (foregroundHwnd != IntPtr.Zero && foregroundHwnd != hwnd)
+                                        {
+                                            uint foregroundThreadId = GetWindowThreadProcessId(foregroundHwnd, out _);
+                                            uint currentThreadId = GetCurrentThreadId();
+
+                                            if (AttachThreadInput(currentThreadId, foregroundThreadId, true))
+                                            {
+                                                SetForegroundWindow(hwnd);
+                                                AttachThreadInput(currentThreadId, foregroundThreadId, false);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            SetForegroundWindow(hwnd);
+                                        }
+                                    }
+                                }), DispatcherPriority.Input);
+                            },
+                            () => { _isClosing = true; WpfApplication.Current.Shutdown(); },
+                            () => LaunchAutoStartGroup());
 
             InitializeHotkey();
             ApplyConfig();
@@ -982,10 +1040,14 @@ namespace EasyTaskStarter
         }
 
         private void Window_StateChanged(object? sender, EventArgs e)
-        {
-            if (WindowState == WindowState.Minimized)
-                Hide();
-        }
+                {
+                    if (WindowState == WindowState.Minimized)
+                    {
+                        // WPF minimize'i iptal et, WindowState Normal kalsın (X butonu davranışı gibi)
+                        WindowState = WindowState.Normal;
+                        Hide();
+                    }
+                }
 
         private void Window_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
         {
