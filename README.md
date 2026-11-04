@@ -2,7 +2,7 @@
 
 **Windows masaüstü kısayol yöneticisi** — Sık kullanılan uygulamaları, klasörleri ve web aramalarını tek tıkla (veya global hotkey ile) başlatın.
 
-![EgeFire Screenshot](assets/screenshot.png)
+![EgeFire Screenshot](https://github.com/mserhangulhan/EgeFire/releases/download/v3.1.5/GitHubPicture.jpg)
 
 ## ✨ Özellikler
 
